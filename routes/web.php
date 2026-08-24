@@ -7,4 +7,12 @@ Route::get('/', function () {
     return redirect()->route('equipos.index');
 });
 
-Route::resource('equipos', EquipoController::class);
+Route::middleware('auth')->group(function () {
+    Route::resource('equipos', EquipoController::class);
+
+    Route::get('/dashboard', function () {
+        return redirect()->route('equipos.index');
+    })->name('dashboard');
+});
+
+require __DIR__.'/auth.php';
