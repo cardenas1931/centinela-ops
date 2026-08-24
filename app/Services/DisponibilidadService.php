@@ -41,7 +41,7 @@ class DisponibilidadService
 
         return [
             'porcentaje_uptime' => $porcentajeUptime,
-            'downtime_segundos' => $downtimeSegundos,
+            'downtime_segundos' => (int) round($downtimeSegundos),
             'numero_incidencias' => $incidencias->count(),
         ];
     }

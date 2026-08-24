@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\ProfileController;
@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/demo', [DemoController::class, 'index'])->name('demo.index');
     Route::post('/demo/equipos/{equipo}/forzar-caida', [DemoController::class, 'forzarCaida'])->name('demo.forzar-caida');
     Route::post('/demo/equipos/{equipo}/restaurar', [DemoController::class, 'restaurar'])->name('demo.restaurar');
+    Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
+    Route::post('/reportes/generar', [ReporteController::class, 'generar'])->name('reportes.generar');
     
 });
 

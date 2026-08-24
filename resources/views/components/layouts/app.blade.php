@@ -22,7 +22,9 @@
             <nav class="flex items-center gap-6 text-sm text-centinela-texto-secundario">
                 <a href="{{ route('equipos.index') }}" class="hover:text-centinela-texto">Dashboard</a>
                 <a href="{{ route('demo.index') }}" class="hover:text-centinela-texto">Modo Demo</a>
+                <a href="{{ route('reportes.index') }}" class="hover:text-centinela-texto">Reportes</a>
                 <a href="{{ route('profile.edit') }}" class="hover:text-centinela-texto">{{ auth()->user()->name }}</a>
+                
             </nav>
         @endauth
     </header>
