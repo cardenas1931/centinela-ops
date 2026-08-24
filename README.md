@@ -1,58 +1,82 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+CentinelaOps
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema de monitoreo de disponibilidad de equipos — detecta caídas, mide tiempo de inactividad, alerta por correo y genera reportes de disponibilidad auditables.
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+La historia detrás del proyecto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Pasé más de 8 años como Operador de Máquinas en un entorno de alta disponibilidad (Casino Atlantic City), donde parte de mi trabajo era identificar fallas críticas y mantener la continuidad operativa de sistemas que no podían darse el lujo de fallar. En 2026 egresé de Ingeniería de Software con IA en SENATI, y en vez de construir "otro CRUD de portafolio", decidí automatizar exactamente el problema que ya conocía de memoria.
 
-## Learning Laravel
+CentinelaOps no nació de un tutorial. Nació de una pregunta simple: ¿cómo hubiera sido mi trabajo si el sistema me hubiera avisado solo, en vez de que yo tuviera que notarlo?
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Cómo funciona (en 30 segundos)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Un simulador de heartbeats corre en segundo plano cada minuto, imitando el pulso de vida de una flota de equipos reales. Cuando un equipo deja de responder dentro de su umbral configurado, el sistema lo detecta automáticamente, registra la incidencia, envía una alerta por correo, y lo refleja en el dashboard — todo sin intervención humana.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Para demostrarlo en vivo (sin depender de hardware conectado), construí un Modo Demo: un botón que fuerza la caída de un equipo real dentro del sistema y deja ver, en segundos, todo el ciclo completo reaccionando en cadena.
 
-## Agentic Development
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
 
-```bash
-composer require laravel/boost --dev
+Funcionalidades
+🔐 Autenticación con roles (administrador / supervisor) vía Laravel Breeze
+📊 Dashboard en tiempo casi real con estado visual tipo semáforo (verde / rojo)
+🕹️ Modo Demo: fuerza y restaura caídas en vivo, ideal para demostraciones
+📋 Bitácora de incidencias por equipo, con duración exacta y origen (real vs. simulado)
+📧 Alertas automáticas por correo cuando un equipo cae o se recupera
+📄 Reportes PDF con resumen de disponibilidad y desglose auditable de cada incidencia
+✅ 27 tests automatizados cubriendo la lógica de negocio crítica (cálculo de uptime, cierre de incidencias, autenticación)
 
-php artisan boost:install
-```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
-## Contributing
+Reportes auditables, no solo un número
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+En vez de mostrar solo un porcentaje de disponibilidad "porque sí", cada reporte PDF incluye el desglose de cada incidencia individual — fecha, duración exacta y origen — para que el número total se pueda verificar, no solo creer.
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+Stack técnico
+Capa	Tecnología
+Backend	PHP 8.4 / Laravel 13
+Base de datos	MariaDB (MySQL-compatible)
+Frontend	Blade + Tailwind CSS v4 + JavaScript
+Jobs / Colas	Laravel Queues (driver database)
+Notificaciones	Laravel Mail
+Reportes	DomPDF
+Infraestructura	Rocky Linux (compatible con RHEL)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Decisiones técnicas deliberadas, no por desconocimiento:
 
-## License
+Polling en vez de WebSockets: actualización cada pocos segundos es suficiente para el caso de uso, sin la complejidad de infraestructura adicional (Redis, servidor de WebSockets).
+Cola database en vez de Redis: la misma lógica — simplicidad correcta para el alcance del proyecto, con criterio, no por límite de conocimiento.
+Sensores simulados por software: permite demostrar el sistema completo sin depender de hardware conectado. La arquitectura está diseñada para que la fuente del heartbeat (simulador, sensor IoT real, o protocolo estándar de industria como SAS) sea intercambiable sin tocar el resto del sistema.
+Instalación
+bash
+composer install
+npm install && npm run build
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+Cómo correr en desarrollo
+bash
+php artisan serve                  # servidor web
+php artisan queue:work             # procesa correos y jobs en cola
+php artisan schedule:work          # ejecuta el motor de monitoreo cada minuto
+Documentación del proyecto
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Todo el proceso de planificación —desde el problema hasta el plan de despliegue— está documentado en la carpeta ../ (un nivel arriba de este código):
+
+1-PRD.md — Documento de Requisitos del Producto
+2-Flujo-de-App.md — Flujo de navegación
+3-UIUX-Design-Brief.md — Sistema de diseño
+4-TRD.md — Arquitectura técnica
+5-Esquema-de-Backend.md — Modelo de datos y endpoints
+6-Plan-de-Implantacion.md — Cronograma y despliegue
+Roadmap (documentado, no implementado — decisión consciente de alcance)
+Conexión a sensores IoT reales vía Arduino (aprovechando mi proyecto previo de Telemetría IoT)
+Integración con protocolo SAS (estándar de la industria de gaming) como fuente real de heartbeats
+Actualización del dashboard vía WebSockets (Laravel Echo) en vez de polling
+Restricción de equipos por supervisor asignado
+Autor
+
+Jose Manuel Cardenas Victoria Egresado de Ingeniería de Software con IA — SENATI LinkedIn · GitHub
