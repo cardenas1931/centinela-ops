@@ -1,0 +1,20 @@
+{
+    "Email": "Correo electrónico",
+    "Password": "Contraseña",
+    "Remember me": "Recordarme",
+    "Log in": "Iniciar sesión",
+    "Forgot your password?": "¿Olvidaste tu contraseña?",
+    "Name": "Nombre",
+    "Confirm Password": "Confirmar contraseña",
+    "Already registered?": "¿Ya tienes cuenta?",
+    "Register": "Registrarse",
+    "Send Password Reset Link": "Enviar enlace de recuperación",
+    "Reset Password": "Restablecer contraseña",
+    "Confirm": "Confirmar",
+    "This is a secure area of the application. Please confirm your password before continuing.": "Esta es un área segura de la aplicación. Confirma tu contraseña antes de continuar.",
+    "Profile": "Perfil",
+    "Log Out": "Cerrar sesión",
+    "Save": "Guardar",
+    "Saved.": "Guardado.",
+    "Delete Account": "Eliminar cuenta"
+}
