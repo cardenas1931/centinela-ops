@@ -20,10 +20,19 @@
 
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+                <header class="border-b border-white/10 px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-estado-activo animate-pulse"></span>
+                        <span class="font-display font-semibold text-lg tracking-tight">CentinelaOps</span>
                     </div>
+
+                    @auth
+                        <nav class="flex items-center gap-6 text-sm text-centinela-texto-secundario">
+                            <a href="{{ route('equipos.index') }}" class="hover:text-centinela-texto">Dashboard</a>
+                            <a href="{{ route('demo.index') }}" class="hover:text-centinela-texto">Modo Demo</a>
+                            <a href="{{ route('profile.edit') }}" class="hover:text-centinela-texto">{{ auth()->user()->name }}</a>
+                        </nav>
+                    @endauth
                 </header>
             @endisset
 
